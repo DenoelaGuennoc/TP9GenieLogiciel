@@ -5,11 +5,8 @@ import java.time.LocalDate;
 public class Embauche {
 
     private LocalDate debut;
-
     private LocalDate fin;
-
     private final Moniteur employe;
-
     private final Club employeur;
 
     public Embauche(LocalDate debut, Moniteur employe, Club employeur) {
@@ -24,7 +21,8 @@ public class Embauche {
      */
     public void terminer(LocalDate dateFin) {
          // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");	    
+        //throw new UnsupportedOperationException("Pas encore implémenté");
+        this.fin = dateFin;
     }
     
     /**

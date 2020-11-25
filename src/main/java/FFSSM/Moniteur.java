@@ -4,15 +4,17 @@
 package FFSSM;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class Moniteur extends Plongeur {
 
     public int numeroDiplome;
+    public LinkedList emplois;
 
-    public Moniteur(String numeroINSEE, String nom, String prenom, String adresse, String telephone, LocalDate naissance, int numeroDiplome) {
-        super(numeroINSEE, nom, prenom, adresse, telephone, naissance);
+    public Moniteur(String numeroINSEE, String nom, String prenom, String adresse, String telephone, LocalDate naissance, GroupeSanguin groupeSanguin, int numeroDiplome) {
+        super(numeroINSEE, nom, prenom, adresse, telephone, naissance, groupeSanguin);
         this.numeroDiplome = numeroDiplome;
     }
 

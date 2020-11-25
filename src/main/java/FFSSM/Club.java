@@ -10,11 +10,8 @@ public class Club {
 
  
     public Moniteur president;
-
     public String nom;
-
     public String adresse;
-
     public String telephone;
 
     public Club(Moniteur président, String nom, String telephone) {
@@ -32,6 +29,7 @@ public class Club {
     public Set<Plongee> plongeesNonConformes() {
          // TODO: Implémenter cette méthode
         throw new UnsupportedOperationException("Pas encore implémenté");
+        
     }
 
     /**

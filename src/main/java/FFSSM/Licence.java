@@ -8,11 +8,8 @@ import java.time.LocalDate;
 public class Licence {
 
     public Personne possesseur;
-
     public String numero;
-
     public LocalDate delivrance;
-
     public Club club;
 
     public Licence(Personne possesseur, String numero, LocalDate delivrance, Club club) {
@@ -45,8 +42,13 @@ public class Licence {
      * @return vrai si valide à la date d
      **/
     public boolean estValide(LocalDate d) {
-         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        // TODO: Implémenter cette méthode
+        //throw new UnsupportedOperationException("Pas encore implémenté");
+        LocalDate finValidite = delivrance.plusYears(1);
+        if(finValidite.isAfter(d)){
+            return true;
+        }
+        return false;
     }
 
 }
