@@ -4,6 +4,7 @@
 package FFSSM;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class Club {
@@ -13,6 +14,7 @@ public class Club {
     public String nom;
     public String adresse;
     public String telephone;
+    public LinkedList<Plongee> plongees = new LinkedList<>();
 
     public Club(Moniteur président, String nom, String telephone) {
         this.president = président;
@@ -28,7 +30,14 @@ public class Club {
      */
     public Set<Plongee> plongeesNonConformes() {
          // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        //throw new UnsupportedOperationException("Pas encore implémenté");
+        Set plongeesNC = new HashSet();
+        for(int i=0; i < plongees.size(); i++){
+            if(!plongees.get(i).estConforme()){
+                plongeesNC.add(plongees.get(i));
+            }
+        }
+        return plongeesNC;
         
     }
 
@@ -38,7 +47,8 @@ public class Club {
      */
     public void organisePlongee(Plongee p) {
          // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+        //throw new UnsupportedOperationException("Pas encore implémenté");
+        this.plongees.add(p);
     }
     
     

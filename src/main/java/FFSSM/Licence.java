@@ -45,10 +45,7 @@ public class Licence {
         // TODO: Implémenter cette méthode
         //throw new UnsupportedOperationException("Pas encore implémenté");
         LocalDate finValidite = delivrance.plusYears(1);
-        if(finValidite.isAfter(d)){
-            return true;
-        }
-        return false;
+        return (finValidite.isAfter(d));
     }
 
 }
