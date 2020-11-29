@@ -42,6 +42,10 @@ public class Plongee {
 	public LocalDate getDate() {
 		return date;
 	}
+        
+        public void setDate(LocalDate date){
+            this.date = date;
+        }
 
 	/**
 	 * Détermine si la plongée est conforme. 
@@ -58,7 +62,7 @@ public class Plongee {
                     return false;
                 }
                 //si le chef de palanquee a une licence périmée
-                if(!this.chefDePalanquee.getLicence().estValide(date)){
+                if(!this.chefDePalanquee.getLicence().estValide(this.date)){
                     return false;
                 }
                 //si l'un des participants n'a pas de licence ou une licence périmée
@@ -67,7 +71,7 @@ public class Plongee {
                         if(participants.get(i).getLicence() == null){
                             return false;
                         }
-                        else if(!participants.get(i).getLicence().estValide(date)){
+                        else if(!participants.get(i).getLicence().estValide(this.date)){
                             return false;
                         }
                     }

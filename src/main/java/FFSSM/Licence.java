@@ -4,6 +4,7 @@
 package FFSSM;
 
 import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.YEARS;
 
 public class Licence {
 
@@ -44,9 +45,6 @@ public class Licence {
     public boolean estValide(LocalDate d) {
         // TODO: Implémenter cette méthode
         //throw new UnsupportedOperationException("Pas encore implémenté");
-        if(this == null){
-            return false;
-        }
         LocalDate finValidite = delivrance.plusYears(1);
         return (finValidite.isAfter(d));
     }

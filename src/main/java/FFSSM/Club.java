@@ -28,7 +28,7 @@ public class Club {
      * valide à la date de la plongée
      * @return l'ensemble des plongées non conformes
      */
-    public Set<Plongee> plongeesNonConformes() throws Exception{
+    public Set<Plongee> plongeesNonConformes() {
          // TODO: Implémenter cette méthode
         //throw new UnsupportedOperationException("Pas encore implémenté");
         Set plongeesNC = new HashSet();
