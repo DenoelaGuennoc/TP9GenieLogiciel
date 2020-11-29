@@ -17,7 +17,11 @@ public class Plongee {
 	public int duree;
         public LinkedList<Plongeur> participants;
 
-	public Plongee(Site lieu, Moniteur chefDePalanquee, LocalDate date, int profondeur, int duree) {
+	public Plongee(Moniteur chef){
+            this.chefDePalanquee = chef;
+        }
+        
+        public Plongee(Site lieu, Moniteur chefDePalanquee, LocalDate date, int profondeur, int duree) {
 		this.lieu = lieu;
 		this.chefDePalanquee = chefDePalanquee;
 		this.date = date;
@@ -25,9 +29,14 @@ public class Plongee {
 		this.duree = duree;
 	}
 
-	public void ajouteParticipant(Plongeur participant) {
+	public void ajouteParticipant(Plongeur participant) throws Exception {
 		// TODO: Implémenter cette méthode
 		//throw new UnsupportedOperationException("Pas encore implémenté");
+                for(int i = 0; i < participants.size(); i++){
+                    if(participants.get(i).equals(participant)){
+                        throw new Exception("Ce plongeur est déjà inscrit pour cette plongée");
+                    }    
+                }
                 this.participants.add(participant);
 	}
 

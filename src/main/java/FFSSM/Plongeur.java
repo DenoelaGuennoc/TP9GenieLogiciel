@@ -38,7 +38,12 @@ public class Plongeur extends Personne {
         return groupeSanguin;
     }
     
-    public void ajouteLicence(String numero, LocalDate delivrance){
-        licence = new Licence(this, numero, delivrance,club);
+    public void ajouteLicence(String numero, LocalDate delivrance)throws Exception {
+        if(this.club == null){
+            throw new Exception("Ce plongeur doit être rattaché à un club pour obtenir une licence");
+        }
+        else {
+            licence = new Licence(this, numero, delivrance,club);
+        }
     }
 }

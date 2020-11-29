@@ -19,10 +19,15 @@ public class Embauche {
      * Termine cette embauche
      * @param dateFin la date à laquelle cette embauche est terminée
      */
-    public void terminer(LocalDate dateFin) {
+    public void terminer(LocalDate dateFin) throws Exception {
          // TODO: Implémenter cette méthode
         //throw new UnsupportedOperationException("Pas encore implémenté");
-        this.fin = dateFin;
+        if(this.fin == null){
+            this.fin = dateFin;
+        }
+        else {
+            throw new Exception("Cette embauche a déjà une date de fin");
+        }
     }
     
     /**

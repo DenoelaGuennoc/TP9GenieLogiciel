@@ -45,9 +45,14 @@ public class Club {
      * Enregistre une nouvelle plongée organisée par ce club
      * @param p la nouvelle plongée
      */
-    public void organisePlongee(Plongee p) {
+    public void organisePlongee(Plongee p) throws Exception {
          // TODO: Implémenter cette méthode
         //throw new UnsupportedOperationException("Pas encore implémenté");
+        for(int i=0; i < plongees.size(); i++){
+            if(plongees.get(i).equals(p)){
+                throw new Exception("Cette plongee a déjà été crée");
+            }
+        }
         this.plongees.add(p);
     }
     
@@ -56,8 +61,8 @@ public class Club {
         return president;
     }
 
-    public void setPresident(Moniteur président) {
-        this.president = président;
+    public void setPresident(Moniteur president) {
+        this.president = president;
     }
 
     public String getNom() {
