@@ -26,7 +26,11 @@ public class FFSSMJUnitTest {
     Moniteur dDuck;
     Moniteur bPicsou;
     Club psd;
-    Licence licenceA;
+    Licence licenceRDuck;
+    Site positionGalion;
+    Plongee galionEspagnol;
+    Plongee grotteEngloutie;
+    
     
         
     @BeforeEach
@@ -37,7 +41,10 @@ public class FFSSMJUnitTest {
         dDuck = new Moniteur("1650829490102","Duck","Donald","15 rue des Canards, Donaldville","0614756234",LocalDate.of(1965,8,22),GroupeSanguin.AMOINS,50349812);
         bPicsou = new Moniteur("1551029480012","Picsou","Balthazar","1 rue du Coffre, Donaldville","0125489325",LocalDate.of(1955,10,11),GroupeSanguin.BMOINS,10452357);
         psd = new Club(bPicsou,"Picsou ScubaDucking","0123568478");
-        licenceA = new Licence(rDuck,"231T54896K",LocalDate.of(2020,9,15),psd);
+        licenceRDuck = new Licence(rDuck,"231T54896K",LocalDate.of(2020,9,15),psd);
+        positionGalion = new Site("Amérique du sud","épave de galion");
+        galionEspagnol = new Plongee(positionGalion, dDuck, LocalDate.of(2020,11,29), 37, 57);
+        grotteEngloutie = new Plongee(dDuck);
         
     }
     
@@ -83,4 +90,78 @@ public class FFSSMJUnitTest {
         
     }
     
+    /**
+     * Test l'organisation d'une plongee par un club
+     */
+    @Test
+    public void testOrganisePlongee() throws Exception{
+        psd.organisePlongee(galionEspagnol);
+        
+        assertTrue(psd.plongees.contains(galionEspagnol),
+                "Ce club doit être organisateur de la plongée galionEspagnol");
+        
+        //force le déclenchement d'une exception
+        Exception thrown = assertThrows(Exception.class,
+                () -> psd.organisePlongee(galionEspagnol));
+        
+        //s'assure que le message d'exception affiché soit le bon
+        assertEquals("Cette plongée a déjà été crée",
+                thrown.getMessage(),
+                "Une plongee ne peut être créée qu'une seule fois");
+        
+        psd.organisePlongee(grotteEngloutie);
+        
+        assertTrue(psd.plongees.contains(grotteEngloutie)); 
+    }
+    
+    /**
+     * Test d'ajout de articipants à une plongee
+     */
+    @Test
+    public void testAjouteParticipant()throws Exception{
+        galionEspagnol.ajouteParticipant(rDuck);
+        
+        //assertFalse(galionEspagnol.participants.isEmpty(), "PUTAIN DE %@*§#");
+        
+        //assertEquals(1,galionEspagnol.participants.size());
+        
+        assertTrue(galionEspagnol.participants.contains(rDuck),
+                "Ce participant n'a pas été ajouté à la plongée");
+        
+        
+        //Test de l'exception
+        Exception thrown = assertThrows(Exception.class,
+                () -> galionEspagnol.ajouteParticipant(rDuck));
+        
+        assertEquals("Ce plongeur est déjà inscrit pour cette plongée",
+                thrown.getMessage(),
+                "Un plongeur ne peut être inscrit qu'une seule fois à une même plongée");
+        
+        galionEspagnol.ajouteParticipant(lDuck);
+        assertTrue(galionEspagnol.participants.contains(lDuck));
+    }
+    
+    /**
+     * Test de création d'une plongée non conforme
+     */
+    @Test
+    public void testPlongeeNonConforme() throws Exception{
+        psd.organisePlongee(grotteEngloutie);
+        
+        //si le chef de palanquee n'a pas de licence
+        assertFalse(grotteEngloutie.estConforme(),
+                "Cette plongée ne doit pas être conforme");
+        
+        //si le chef a une licence mais pas un des plongeurs
+        dDuck.setClub(psd);
+        dDuck.ajouteLicence("536A74368M", LocalDate.of(2020,8,12));
+        grotteEngloutie.ajouteParticipant(fDuck);
+                
+        assertFalse(grotteEngloutie.estConforme(),
+                "Cette plongée ne doit pas être conforme");
+        
+        assertTrue(psd.plongeesNonConformes().contains(grotteEngloutie),
+                "Cette plongée devrait apparaître dans les plongées non conformes du club");
+        
+    }
 }

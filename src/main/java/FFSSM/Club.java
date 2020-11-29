@@ -28,7 +28,7 @@ public class Club {
      * valide à la date de la plongée
      * @return l'ensemble des plongées non conformes
      */
-    public Set<Plongee> plongeesNonConformes() {
+    public Set<Plongee> plongeesNonConformes() throws Exception{
          // TODO: Implémenter cette méthode
         //throw new UnsupportedOperationException("Pas encore implémenté");
         Set plongeesNC = new HashSet();
@@ -50,7 +50,7 @@ public class Club {
         //throw new UnsupportedOperationException("Pas encore implémenté");
         for(int i=0; i < plongees.size(); i++){
             if(plongees.get(i).equals(p)){
-                throw new Exception("Cette plongee a déjà été crée");
+                throw new Exception("Cette plongée a déjà été crée");
             }
         }
         this.plongees.add(p);

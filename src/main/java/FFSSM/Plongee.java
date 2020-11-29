@@ -4,6 +4,7 @@
 package FFSSM;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -15,7 +16,7 @@ public class Plongee {
 	public LocalDate date;
 	public int profondeur;
 	public int duree;
-        public LinkedList<Plongeur> participants;
+        public LinkedList<Plongeur> participants = new LinkedList<>();
 
 	public Plongee(Moniteur chef){
             this.chefDePalanquee = chef;
@@ -32,11 +33,9 @@ public class Plongee {
 	public void ajouteParticipant(Plongeur participant) throws Exception {
 		// TODO: Implémenter cette méthode
 		//throw new UnsupportedOperationException("Pas encore implémenté");
-                for(int i = 0; i < participants.size(); i++){
-                    if(participants.get(i).equals(participant)){
-                        throw new Exception("Ce plongeur est déjà inscrit pour cette plongée");
-                    }    
-                }
+                if(participants.contains(participant)){
+                    throw new Exception("Ce plongeur est déjà inscrit pour cette plongée");
+                }    
                 this.participants.add(participant);
 	}
 
@@ -53,12 +52,24 @@ public class Plongee {
 	public boolean estConforme() {
 		// TODO: Implémenter cette méthode
 		//throw new UnsupportedOperationException("Pas encore implémenté");
-                for(int i=0; i < participants.size(); i++){
-                    if(participants.get(i).getLicence() == null){
-                        return false;
-                    }
-                    if(!participants.get(i).getLicence().estValide(date)){
-                        return false;
+                
+                //si le chef de palanquee n'a pas de licence
+                if(this.chefDePalanquee.getLicence() == null){
+                    return false;
+                }
+                //si le chef de palanquee a une licence périmée
+                if(!this.chefDePalanquee.getLicence().estValide(date)){
+                    return false;
+                }
+                //si l'un des participants n'a pas de licence ou une licence périmée
+                if(!this.participants.isEmpty()){
+                    for(int i=0; i < participants.size(); i++){
+                        if(participants.get(i).getLicence() == null){
+                            return false;
+                        }
+                        else if(!participants.get(i).getLicence().estValide(date)){
+                            return false;
+                        }
                     }
                 }
                 return true;
