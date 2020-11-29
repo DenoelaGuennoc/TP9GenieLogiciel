@@ -35,7 +35,10 @@ public class Embauche {
      * @return vrai si terminée, faux sinon.
      */
     public boolean estTerminee() {
-        return (fin != null);
+        if(fin.isBefore(LocalDate.now())){
+            return true;
+        }
+        return false;
     }
     /**
      * Get the value of employeur
