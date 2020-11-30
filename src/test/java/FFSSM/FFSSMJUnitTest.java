@@ -8,6 +8,7 @@ package FFSSM;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.LinkedList;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,9 @@ public class FFSSMJUnitTest {
     Plongeur lDuck;
     Moniteur dDuck;
     Moniteur bPicsou;
+    Moniteur aGripsou;
     Club psd;
+    Club gte;
     Site positionGalion;
     Plongee galionEspagnol;
     Plongee grotteEngloutie;
@@ -42,7 +45,9 @@ public class FFSSMJUnitTest {
         lDuck = new Plongeur("1990129480098","Duck","Loulou","15 rue des Canards, Donaldville","0645620314",LocalDate.of(1999,1,23),GroupeSanguin.BPLUS);
         dDuck = new Moniteur("1650829490102","Duck","Donald","15 rue des Canards, Donaldville","0614756234",LocalDate.of(1965,8,22),GroupeSanguin.AMOINS,50349812);
         bPicsou = new Moniteur("1551029480012","Picsou","Balthazar","1 rue du Coffre, Donaldville","0125489325",LocalDate.of(1955,10,11),GroupeSanguin.BMOINS,10452357);
+        aGripsou = new Moniteur("1551029480013","Gripsou","Archibald","1 rue du Milliard, Donaldville","0125489326",LocalDate.of(1955,10,11),GroupeSanguin.AMOINS,10452358);
         psd = new Club(bPicsou,"Picsou ScubaDucking","0123568478");
+        gte = new Club(aGripsou,"Gripsou Trésors Engloutis","0123568479");
         positionGalion = new Site("Amérique du sud","épave de galion");
         galionEspagnol = new Plongee(positionGalion, dDuck, LocalDate.of(2020,11,29), 37, 57);
         grotteEngloutie = new Plongee(dDuck);
@@ -361,6 +366,44 @@ public class FFSSMJUnitTest {
                 () -> dDuck.terminerEmbauche(LocalDate.of(2021,3,18)));
         assertEquals("Cette embauche a déjà une date de fin",
                 thrownDejaDefinie.getMessage());
+    }
+    
+    /**
+     * Test de l'obtention de l'employeur actuel d'un moniteur
+     */
+    @Test
+    public void testEmployeurActuel() throws Exception{
+        Optional<Club> empty = Optional.empty();
+        Optional<Club> cPSD = Optional.of(psd);
+        Optional<Club> cGTE = Optional.of(gte);
+        //si le moniteur n'a pas d'emploi
+        assertEquals(empty, dDuck.employeurActuel(),
+                "Le moniteur ne doit pas avoir d'employeur actuel");
+        //s'il a un emploi terminé
+        dDuck.nouvelleEmbauche(psd, LocalDate.of(2020,1,1));
+        dDuck.terminerEmbauche(LocalDate.of(2020,10,5));
+        assertEquals(empty, dDuck.employeurActuel(),
+                "Le moniteur ne doit pas avoir d'employeur actuel");
+        //s'il a un emploi en cours sans date de fin
+        dDuck.nouvelleEmbauche(psd, LocalDate.of(2020,10,12));
+        assertEquals(cPSD, dDuck.employeurActuel(),
+                "Le moniteur doit avoir un employeur actuel");
+        //s'il a un emploi en cours avec date de fin ultérieure
+        dDuck.terminerEmbauche(LocalDate.of(2050,12,31));
+        assertEquals(cPSD, dDuck.employeurActuel(),
+                "Le moniteur doit avoir un employeur actuel");
+        //s'il son emploi actuel n'est pas le dernier de la liste
+        dDuck.nouvelleEmbauche(gte, LocalDate.of(2051,1,1));
+        assertEquals(cPSD, dDuck.employeurActuel(),
+                "Le moniteur doit avoir un employeur actuel");
+        
+        //si ce n'est pas son dernier emploi et qu'il est terminé
+        aGripsou.nouvelleEmbauche(gte, LocalDate.of(2018,1,2));
+        aGripsou.terminerEmbauche(LocalDate.of(2019,1,16));
+        aGripsou.nouvelleEmbauche(gte, LocalDate.of(2030,12,2));
+        
+        assertEquals(empty, aGripsou.employeurActuel(),
+                "Le moniteur ne doit pas avoir d'employeur actuel");
         
     }
 }

@@ -26,10 +26,12 @@ public class Moniteur extends Plongeur {
     public Optional<Club> employeurActuel() {
          // TODO: Implémenter cette méthode
         //throw new UnsupportedOperationException("Pas encore implémenté");
-        for(int i = emplois.size()-1; i>0; i--){
-            if(this.emplois.get(i).getDebut().isBefore(LocalDate.now())){
-                if(!this.emplois.get(i).estTerminee()){
-                    return Optional.of(this.emplois.get(i).getEmployeur());
+        if(!emplois.isEmpty()){
+            for(int i = emplois.size()-1; i>0; i--){
+                if(this.emplois.get(i).getDebut().isBefore(LocalDate.now())){
+                    if(!this.emplois.get(i).estTerminee()){
+                        return Optional.of(this.emplois.get(i).getEmployeur());
+                    }
                 }
             }
         }
