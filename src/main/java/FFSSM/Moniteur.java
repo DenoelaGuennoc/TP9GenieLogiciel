@@ -69,13 +69,15 @@ public class Moniteur extends Plongeur {
     }
     
     /**
-     * Clôture l'embauche actuelle du moniteur
+     * Clôture la dernière embauche du moniteur à la date donnée
+     * si elle n'a pas déjà de date de fin
      */
     public void terminerEmbauche(LocalDate fin)throws Exception {
-        for(int i = emplois.size()-1; i>0; i--){
-            if(this.emplois.get(i).getDebut().isBefore(LocalDate.now())){
-                this.emplois.get(i).terminer(fin);
-            }
+        if(!emplois.isEmpty()){
+            this.emplois.getLast().terminer(fin);
+        }
+        else {
+            throw new Exception("Ce moniteur n'a aucun emploi en cours");
         }
     }
 

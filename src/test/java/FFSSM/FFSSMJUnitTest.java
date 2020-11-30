@@ -339,6 +339,28 @@ public class FFSSMJUnitTest {
     }
     
     /**
-     * 
+     * Test terminer l'embauche d'un moniteur
      */
+    @Test
+    public void testTerminerEmbauche() throws Exception{
+        //si le moniteur n'a aucune embauche
+        Exception thrownPasDEmbauche = assertThrows(Exception.class,
+                () -> dDuck.terminerEmbauche(LocalDate.of(2020,3,18)));
+        assertEquals("Ce moniteur n'a aucun emploi en cours",
+                thrownPasDEmbauche.getMessage());
+        
+        //s'il a une embauche sans date de fin
+        dDuck.nouvelleEmbauche(psd, LocalDate.of(2020,1,1));
+        dDuck.terminerEmbauche(LocalDate.of(2020,12,31));
+        
+        assertEquals(LocalDate.of(2020,12,31),dDuck.emplois.getLast().getFin(),
+                "La date de fin de cette embauche n'a pas été bien ajoutée");
+        
+        //si sa dernière embauche a déjà une date de fin
+        Exception thrownDejaDefinie = assertThrows(Exception.class,
+                () -> dDuck.terminerEmbauche(LocalDate.of(2021,3,18)));
+        assertEquals("Cette embauche a déjà une date de fin",
+                thrownDejaDefinie.getMessage());
+        
+    }
 }
