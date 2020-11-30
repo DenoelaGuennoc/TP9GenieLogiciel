@@ -404,6 +404,23 @@ public class FFSSMJUnitTest {
         
         assertEquals(empty, aGripsou.employeurActuel(),
                 "Le moniteur ne doit pas avoir d'employeur actuel");
+    }
+    
+    /**
+     * 
+     */
+    @Test
+    public void testEmplois() throws Exception{
+        LinkedList <Embauche> listeAttendue = new LinkedList<>();
+        Embauche embaucheA = new Embauche(LocalDate.of(2018,1,1),bPicsou,psd);
+        embaucheA.terminer(LocalDate.of(2018,12,31));
+        Embauche embaucheB = new Embauche(LocalDate.of(2019,1,1),bPicsou,psd);
+        listeAttendue.addLast(embaucheA);
+        listeAttendue.addLast(embaucheB);
+
+        bPicsou.emplois.addLast(embaucheA);
+        bPicsou.emplois.addLast(embaucheB);
         
+        assertEquals(listeAttendue,bPicsou.emplois());
     }
 }
