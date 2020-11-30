@@ -273,34 +273,29 @@ public class FFSSMJUnitTest {
     /**
      * Test des toString de Site et Club
      */
+    @Test
     public void testToString(){
         //Site.toString
         assertEquals("Site{nom=Amérique du sud, details=épave de galion}",
                 positionGalion.toString());
         //Club.toString
         psd.setAdresse("2 quai du port, Donaldville");
-        assertEquals("Club{président=" + bPicsou + ", nom=Picsou ScubaDucking, adresses=2 quai du port, Donaldville, telephone=0123568478}",
+        assertEquals("Club{président=" + bPicsou + ", nom=Picsou ScubaDucking, adresse=2 quai du port, Donaldville, telephone=0123568478}",
                 psd.toString());
-    } // ne couvre pas les méthodes toString pour une raison inconnue
+    }
     
     /**
      * Test personne avec numero INSEE null
      */
+    @Test
     public void testINSEENull(){
-        /*IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> bPicsou.setNumeroINSEE(null));
-        
-        assertEquals("numeroINSEE is null",
-                thrown.getMessage(),
-                "Un numéro INSEE ne peut être null");
-        */
         assertThrows(IllegalArgumentException.class, new Executable(){
             @Override
             public void execute() throws Throwable {
                 bPicsou.setNumeroINSEE(null);
             }        
         });
-    } // ne test pas l'exception pour une raison inconnue
+    }
     
     /**
      * Test création d'une nouvelle embauche

@@ -42,7 +42,7 @@ public class Site
 
 	@Override
 	public String toString() {
-		return "Site{" + "nom=" + nom + ", details=" + details + '}';
+		return "Site{" + "nom=" + this.nom + ", details=" + this.details + '}';
 	}
 
 	
