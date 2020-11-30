@@ -7,11 +7,13 @@ package FFSSM;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.LinkedList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -29,6 +31,7 @@ public class FFSSMJUnitTest {
     Site positionGalion;
     Plongee galionEspagnol;
     Plongee grotteEngloutie;
+    Embauche emploisDDuck;
     
     
         
@@ -43,6 +46,7 @@ public class FFSSMJUnitTest {
         positionGalion = new Site("Amérique du sud","épave de galion");
         galionEspagnol = new Plongee(positionGalion, dDuck, LocalDate.of(2020,11,29), 37, 57);
         grotteEngloutie = new Plongee(dDuck);
+        emploisDDuck = new Embauche(LocalDate.of(2020,10,5),dDuck,psd);
         
     }
     
@@ -272,5 +276,69 @@ public class FFSSMJUnitTest {
         psd.setAdresse("2 quai du port, Donaldville");
         assertEquals("Club{président=" + bPicsou + ", nom=Picsou ScubaDucking, adresses=2 quai du port, Donaldville, telephone=0123568478}",
                 psd.toString());
+    } // ne couvre pas les méthodes toString pour une raison inconnue
+    
+    /**
+     * Test personne avec numero INSEE null
+     */
+    public void testINSEENull(){
+        /*IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
+                () -> bPicsou.setNumeroINSEE(null));
+        
+        assertEquals("numeroINSEE is null",
+                thrown.getMessage(),
+                "Un numéro INSEE ne peut être null");
+        */
+        assertThrows(IllegalArgumentException.class, new Executable(){
+            @Override
+            public void execute() throws Throwable {
+                bPicsou.setNumeroINSEE(null);
+            }        
+        });
+    } // ne test pas l'exception pour une raison inconnue
+    
+    /**
+     * Test création d'une nouvelle embauche
+     */
+    @Test
+    public void testNouvelleEmbauche() throws Exception{
+        //ajout d'une première embauche
+        dDuck.nouvelleEmbauche(psd, LocalDate.of(2020,10,5));
+        
+        assertEquals(1,dDuck.emplois.size(),"L'embauche n'a pas été ajoutée à la liste");
+        assertEquals(emploisDDuck.getDebut(), dDuck.emplois.getLast().getDebut());
+        assertEquals(emploisDDuck.getEmployeur(), dDuck.emplois.getLast().getEmployeur());
+        assertEquals(emploisDDuck.getEmploye(), dDuck.emplois.getLast().getEmploye());
+        
+        //ajout d'une deuxième embauche
+        //si l'embauche précédente n'a pas de date de fin
+        Exception thrownPasFini = assertThrows(Exception.class,
+                () -> dDuck.nouvelleEmbauche(psd, LocalDate.of(2020,11,12)));
+        
+        assertEquals("La dernière embauche de ce moniteur doit avoir une date de fin pour en créer une nouvelle",
+                thrownPasFini.getMessage(),
+                "L'embauche ne doit pas être créée");
+        assertEquals(1,dDuck.emplois.size());
+        
+        //si l'embauche précédente fini après le début de la nouvelle
+        dDuck.emplois.getLast().setFin(LocalDate.of(2021,2,25));
+        Exception thrownPasFiniQuandCommence = assertThrows(Exception.class,
+                () -> dDuck.nouvelleEmbauche(psd, LocalDate.of(2020,11,12)));
+        
+        assertEquals("Une nouvelle embauche ne peut pas démarrer avant la fin de la précédente",
+                thrownPasFiniQuandCommence.getMessage(),
+                "L'embauche ne doit pas être créée");
+        assertEquals(1,dDuck.emplois.size());
+        
+        //si les bonnes conditions sont réunies
+        dDuck.nouvelleEmbauche(psd, LocalDate.of(2021,11,12));
+        assertEquals(2,dDuck.emplois.size(),"L'embauche n'a pas été ajoutée à la liste");
+        assertEquals(LocalDate.of(2021,11,12), dDuck.emplois.getLast().getDebut());
+        assertEquals(psd, dDuck.emplois.getLast().getEmployeur());
+        assertEquals(dDuck, dDuck.emplois.getLast().getEmploye());
     }
+    
+    /**
+     * 
+     */
 }

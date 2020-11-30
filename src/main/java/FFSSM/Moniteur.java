@@ -11,7 +11,7 @@ import java.util.Optional;
 public class Moniteur extends Plongeur {
 
     public int numeroDiplome;
-    public LinkedList<Embauche> emplois;
+    public LinkedList<Embauche> emplois = new LinkedList<>();
 
     public Moniteur(String numeroINSEE, String nom, String prenom, String adresse, String telephone, LocalDate naissance, GroupeSanguin groupeSanguin, int numeroDiplome) {
         super(numeroINSEE, nom, prenom, adresse, telephone, naissance, groupeSanguin);
@@ -44,16 +44,21 @@ public class Moniteur extends Plongeur {
     public void nouvelleEmbauche(Club employeur, LocalDate debutNouvelle) throws Exception {   
          // TODO: Implémenter cette méthode
         //throw new UnsupportedOperationException("Pas encore implémenté");	
-        LocalDate finDerniereEmbauche = this.emplois.getLast().getFin();
         Embauche nouvelleEmbauche = new Embauche(debutNouvelle, this, employeur);
-        if(finDerniereEmbauche == null){
-            throw new Exception("La dernière embauche de ce moniteur doit avoir une date de fin pour en créer une nouvelle");
-        }
-        else if(debutNouvelle.isAfter(finDerniereEmbauche)){
-            this.emplois.addLast(nouvelleEmbauche);
+        if(this.emplois.isEmpty()){
+            this.emplois.add(nouvelleEmbauche);
         }
         else {
-            throw new Exception("Une nouvelle embauche ne peut pas démarrer avant la fin de la précédente");
+            LocalDate finDerniereEmbauche = this.emplois.getLast().getFin();
+            if(finDerniereEmbauche == null){
+                throw new Exception("La dernière embauche de ce moniteur doit avoir une date de fin pour en créer une nouvelle");
+            }
+            else if(debutNouvelle.isAfter(finDerniereEmbauche)){
+                this.emplois.addLast(nouvelleEmbauche);
+            }
+            else {
+                throw new Exception("Une nouvelle embauche ne peut pas démarrer avant la fin de la précédente");
+            }
         }
     }
 
