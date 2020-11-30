@@ -376,7 +376,7 @@ public class FFSSMJUnitTest {
                 "Le moniteur ne doit pas avoir d'employeur actuel");
         //s'il a un emploi terminé
         dDuck.nouvelleEmbauche(psd, LocalDate.of(2020,1,1));
-        dDuck.terminerEmbauche(LocalDate.of(2020,10,5));
+        dDuck.terminerEmbauche(LocalDate.of(2020,5,5));
         assertEquals(empty, dDuck.employeurActuel(),
                 "Le moniteur ne doit pas avoir d'employeur actuel");
         //s'il a un emploi en cours sans date de fin
@@ -402,7 +402,7 @@ public class FFSSMJUnitTest {
     }
     
     /**
-     * 
+     * Test de la fonction emplois()
      */
     @Test
     public void testEmplois() throws Exception{
